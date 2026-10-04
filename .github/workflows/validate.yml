@@ -52,8 +52,14 @@ jobs:
       - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           use-public-rspm: true
+      - name: Install igraph system runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglpk40
       - name: Install domain dependencies
         run: |
           Rscript -e 'install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg", "yaml", "readxl", "xml2", "systemfonts", "ggraph", "igraph", "BiocManager")); BiocManager::install("ComplexHeatmap", ask=FALSE, update=FALSE)'
+      - name: Verify domain namespaces load
+        run: Rscript -e 'invisible(lapply(c("igraph", "ggraph", "ComplexHeatmap"), loadNamespace))'
       - run: Rscript tests/test_recipes.R
       - run: Rscript examples/domain_adapters.R

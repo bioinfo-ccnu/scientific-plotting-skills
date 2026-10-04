@@ -1,6 +1,11 @@
 # Optional domain libraries. Load plot_cli.R before this file.
+.sp_load_domain <- function(packages) {
+  for(package in packages) tryCatch(loadNamespace(package),error=function(error)
+    stop("Unable to load ",package,": ",conditionMessage(error),call.=FALSE))
+  invisible(NULL)
+}
 ggraph_scientific_network <- function(data, preset="science", layout="fr", directed=FALSE, seed=2026) {
-  if(!requireNamespace("ggraph",quietly=TRUE)||!requireNamespace("igraph",quietly=TRUE))stop("Install ggraph and igraph")
+  .sp_load_domain(c("igraph","ggraph"))
   require_scientific_columns(data,c("source","target"));require_scientific_unique(data,c("source","target"))
   if(!directed && anyDuplicated(vapply(seq_len(nrow(data)),function(i)jsonlite::toJSON(sort(c(as.character(data$source[i]),as.character(data$target[i])))),character(1))))stop("Duplicate undirected edges")
   graph<-igraph::graph_from_data_frame(data[,c("source","target"),drop=FALSE],directed=directed)
@@ -15,7 +20,7 @@ ggraph_scientific_network <- function(data, preset="science", layout="fr", direc
 
 complex_scientific_heatmap <- function(data,preset="science",cluster_rows=TRUE,cluster_columns=TRUE,
                                        linkage="average",distance="euclidean",center=NULL) {
-  if(!requireNamespace("ComplexHeatmap",quietly=TRUE))stop("Install ComplexHeatmap via BiocManager")
+  .sp_load_domain("ComplexHeatmap")
   if(grDevices::dev.cur()==1L) {
     grDevices::pdf(file=NULL)
     on.exit(grDevices::dev.off(),add=TRUE)

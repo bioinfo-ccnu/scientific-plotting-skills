@@ -25,6 +25,8 @@ The ggraph adapter consumes `source,target` edge rows, with no duplicate undirec
 
 See [ComplexHeatmap's reference book](https://jokergoo.github.io/ComplexHeatmap-reference/book/) and [ggraph's official reference](https://ggraph.data-imaginist.com/reference/ggraph.html) for custom annotation, legend and graph layouts.
 
+On Debian/Ubuntu, some precompiled igraph packages also need the GLPK system runtime. If loading fails with `libglpk.so.40` missing, install `libglpk40`; compiling from source can require `libglpk-dev` and `libxml2-dev`. See [igraph's official installation troubleshooting](https://r.igraph.org/articles/installation-troubleshooting.html). The adapters preserve the actual namespace-loading error to distinguish a missing R package from a missing system library.
+
 ## Python: existing AnnData/Scanpy embeddings
 
 ```bash
