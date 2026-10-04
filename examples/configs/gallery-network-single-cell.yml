@@ -1,0 +1,36 @@
+version: 1
+backend: python
+synthetic: true
+presets:
+- nature
+- dark
+output: ../../build/recipes/network-single-cell
+width_mm: 260
+height_mm: 170
+dpi: 180
+formats:
+- pdf
+- svg
+- png
+title: NETWORK-SINGLE-CELL | SYNTHETIC DATA
+layout:
+  ncols: 3
+  tags: true
+panels:
+- type: network
+  data: ../../skills/scientific-plotting/assets/templates/network.csv
+  options:
+    title: Network
+    layout: circular
+- type: dendrogram
+  data: ../../skills/scientific-plotting/assets/templates/dendrogram.csv
+  options:
+    title: Dendrogram
+- type: umap
+  data: ../../skills/scientific-plotting/assets/templates/umap.csv
+  options:
+    title: Umap
+- type: dotplot
+  data: ../../skills/scientific-plotting/assets/templates/dotplot.csv
+  options:
+    title: Dotplot

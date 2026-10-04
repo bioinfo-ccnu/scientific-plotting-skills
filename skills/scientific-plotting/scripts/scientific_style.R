@@ -105,7 +105,7 @@ export_scientific <- function(plot, output_stem, formats = c("pdf", "svg", "png"
                  session = capture.output(utils::sessionInfo()))
   record$raster_device <- if (has_ragg) "ragg" else if (capabilities("cairo")) "cairo" else getOption("bitmapType")
   if (has_ragg) record$versions$ragg <- as.character(utils::packageVersion("ragg"))
-  content <- jsonlite::toJSON(record, auto_unbox = TRUE, pretty = TRUE, null = "null")
+  content <- jsonlite::toJSON(record, auto_unbox = TRUE, pretty = TRUE, null = "null", digits = 10)
   dir.create(dirname(output_stem), recursive = TRUE, showWarnings = FALSE)
   stage <- tempfile(pattern = ".plot-", tmpdir = dirname(output_stem))
   dir.create(stage)

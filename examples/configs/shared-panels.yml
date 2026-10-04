@@ -1,0 +1,26 @@
+version: 1
+backend: python
+synthetic: true
+presets: [nature, dark]
+output: ../../build/recipes/shared-panels
+width_mm: 180
+height_mm: 100
+dpi: 300
+title: SYNTHETIC DATA | shared axes and legend
+category_levels: [A, B, C]
+layout: {ncols: 2, tags: true, shared_legend: true, sharex: true, sharey: true}
+panels:
+  - type: ribbon
+    data: ../../skills/scientific-plotting/assets/templates/ribbon.csv
+    options:
+      title: Full response
+      xlabel: Time (a.u.)
+      ylabel: Response (a.u.)
+      interval_definition: synthetic supplied plus/minus 0.06 range; not inferred CI
+  - type: ribbon
+    data: ../../skills/scientific-plotting/assets/templates/ribbon.csv
+    options:
+      title: Companion response
+      xlabel: Time (a.u.)
+      ylabel: Response (a.u.)
+      interval_definition: synthetic supplied plus/minus 0.06 range; not inferred CI

@@ -1,0 +1,24 @@
+version: 1
+backend: python
+synthetic: true
+presets:
+- nature
+- dark
+output: ../../build/recipes/statistics
+width_mm: 150
+height_mm: 100
+dpi: 300
+title: SYNTHETIC DATA | explicit paired comparison
+panels:
+- type: paired
+  data: ../../skills/scientific-plotting/assets/templates/paired.csv
+  options:
+    title: Paired
+  statistics:
+    method: paired-t
+    experimental_unit: independent synthetic subject
+    contrasts:
+    - - A
+      - B
+    confidence: 0.95
+    adjust: bh

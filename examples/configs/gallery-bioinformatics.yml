@@ -1,0 +1,42 @@
+version: 1
+backend: python
+synthetic: true
+presets:
+- nature
+- dark
+output: ../../build/recipes/bioinformatics
+width_mm: 260
+height_mm: 220
+dpi: 180
+formats:
+- pdf
+- svg
+- png
+title: BIOINFORMATICS | SYNTHETIC DATA
+layout:
+  ncols: 3
+  tags: true
+panels:
+- type: volcano
+  data: ../../skills/scientific-plotting/assets/templates/volcano.csv
+  options:
+    title: Volcano
+- type: ma
+  data: ../../skills/scientific-plotting/assets/templates/ma.csv
+  options:
+    title: Ma
+- type: enrichment
+  data: ../../skills/scientific-plotting/assets/templates/enrichment.csv
+  options:
+    title: Enrichment
+- type: upset
+  data: ../../skills/scientific-plotting/assets/templates/upset.csv
+  options:
+    title: Upset
+- type: heatmap
+  data: ../../skills/scientific-plotting/assets/templates/heatmap.csv
+  options:
+    title: Heatmap
+    center: 0
+    cluster_rows: true
+    cluster_columns: true

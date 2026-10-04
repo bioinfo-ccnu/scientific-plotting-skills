@@ -1,0 +1,19 @@
+version: 1
+backend: python
+synthetic: true
+preset: nature
+output: ../../build/recipes/ribbon
+width_mm: 140
+height_mm: 100
+dpi: 300
+formats:
+- pdf
+- svg
+- png
+title: SYNTHETIC DATA
+panels:
+- type: ribbon
+  data: ../../skills/scientific-plotting/assets/templates/ribbon.csv
+  options:
+    title: Ribbon
+    interval_definition: "synthetic supplied \xB10.06 interval; not inferred CI"

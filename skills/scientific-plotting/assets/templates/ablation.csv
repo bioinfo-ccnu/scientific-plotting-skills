@@ -1,0 +1,10 @@
+model,component,value
+A,Full,0.8
+A,No sequence,0.74
+A,No structure,0.68
+B,Full,0.76
+B,No sequence,0.7
+B,No structure,0.64
+C,Full,0.7200000000000001
+C,No sequence,0.6600000000000001
+C,No structure,0.6000000000000001

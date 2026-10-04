@@ -5,7 +5,7 @@
 
 A reusable AI-agent skill for reproducible scientific figures in **Python and R**, maintained by [CCNU Bioinformatics](https://github.com/bioinfo-ccnu). Create a plot from data, restyle an existing figure, or assemble a multi-panel figure with editable source and explicit export settings.
 
-Python uses **Matplotlib / SciencePlots**, with Seaborn available for statistical plots. R uses **ggplot2 / patchwork**, with optional ggthemes, ggsci and ComplexHeatmap workflows. Both backends share the same preset and categorical palette configuration.
+Python uses **Matplotlib / SciencePlots**, with Seaborn available for statistical plots. R uses **ggplot2 / patchwork**, with optional ggthemes, ggsci, ComplexHeatmap and ggraph adapters. Scanpy can display existing AnnData embeddings. Both backends share the same preset and categorical palette configuration.
 
 | Python · Nature-inspired | R · Dark |
 |---|---|
@@ -36,9 +36,28 @@ Example requests:
 
 > Use $scientific-plotting with R and patchwork. Restyle my ggplot figure for a dark-background presentation, preserving the data and uncertainty definitions.
 
-> 用 $scientific-plotting，使用 R，把我的差异分析结果画成火山图，保留真实的 log2FC 和校正后 p 值，使用英文标签，导出 PDF、SVG 和 TIFF。
+> Use $scientific-plotting with R. Draw a volcano plot from my differential-analysis results, preserving supplied log2 fold changes and adjusted p values. Use English labels and export PDF, SVG and TIFF.
 
 Provide data, its units and experimental structure, the intended message, and any required figure dimensions or style reference. The skill can guide line/scatter plots, distributions, heatmaps, forest plots, ROC/PR curves, volcano plots, enrichment plots and other data-driven figures. Specialist plot types may require additional domain packages and supplied analysis results.
+
+## Expanded capabilities
+
+**22 runnable recipes in both Python and R**, with synthetic CSV templates, YAML configurations, data validation and rendered examples.
+
+| Area | Included capabilities |
+|---|---|
+| General plots | Raincloud, paired comparisons, ribbons, forest plots, correlation matrices, facets |
+| Bioinformatics | Volcano, MA, GO/KEGG enrichment bubbles from supplied results, exact-intersection UpSet, clustered/annotated heatmaps |
+| Model evaluation | ROC, PR, confusion, calibration, prediction vs observation, ablation, multi-model benchmarks |
+| Statistics | Sample sizes, mean differences, effect sizes, confidence intervals, paired t/Welch/signed-rank tests, BH/Bonferroni correction |
+| Paper panels | A–F/custom tags, shared legends/compatible axes, consistent typography/colors, zoom insets |
+| Data and batches | CSV/TSV/Excel, canonical column mapping, long/wide reshape, YAML, several styles from one job |
+| Automated QA | Estimated label overlap/clipping, fonts/glyphs, contrast, export dimensions and raster resolution, JSON reports |
+| Network and single cell | Edge networks, dendrograms, supplied UMAP coordinates and gene-expression DotPlots; optional ggraph/ComplexHeatmap/Scanpy |
+
+[Browse the recipe galleries →](examples/gallery/recipes.md) · [Input schemas and templates →](skills/scientific-plotting/references/recipes.md) · [YAML guide →](skills/scientific-plotting/references/configuration.md)
+
+These helpers visualize supplied results. They do not silently run differential expression, enrichment, embedding inference or model training. Statistical comparisons require an explicit experimental unit and chosen method. Automated QA identifies possible issues and still needs visual review.
 
 ## Styles
 
@@ -72,7 +91,8 @@ python examples/python_gallery.py --preset nature --out build/nature
 R 4.2+ (install into your chosen project library):
 
 ```r
-install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg"))
+install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg",
+                   "yaml", "readxl", "xml2", "systemfonts"))
 ```
 
 ```bash
@@ -80,7 +100,36 @@ Rscript examples/r_gallery.R
 Rscript examples/r_gallery.R build/r-dark dark
 ```
 
-The scripts read the same committed CSV files and work from any current directory. Python writes to `build/python`, R to `build/r`; custom relative output paths are relative to your current directory. Both produce PDF, SVG, PNG and `*.plot.json` export metadata. Existing outputs are protected; use a fresh directory or explicitly request replacement (Python CLI supports `--overwrite`; R helper supports `overwrite = TRUE`). Regenerate synthetic data with `python examples/generate_data.py` (seed 2026).
+Run a recipe, statistical comparison or Excel reshape job:
+
+```bash
+python skills/scientific-plotting/scripts/plot_cli.py examples/configs/volcano.yml
+python skills/scientific-plotting/scripts/plot_cli.py examples/configs/statistics.yml
+Rscript skills/scientific-plotting/scripts/plot_cli.R examples/configs/excel.yml
+# Identical YAML, another backend; explicit output stem:
+python skills/scientific-plotting/scripts/plot_cli.py examples/configs/prediction.yml \
+  --backend r --output build/r-prediction
+# All four category galleries, two styles each:
+python examples/recipe_gallery.py --backend python --out build/expanded-python
+python examples/recipe_gallery.py --backend r --out build/expanded-r
+```
+
+The runners write PDF/SVG/PNG plus metrics/provenance `*.plot.json`, heuristic `*.qc.json`, resolved `*.config.yml`, runnable `*.source.py`/`*.source.R` and statistical tables where requested. Keep the original data and installed helper version for reproduction. YAML paths are relative to the configuration file; command-line output stems are relative to the working directory. See the [configuration guide](skills/scientific-plotting/references/configuration.md), [statistical definitions](skills/scientific-plotting/references/statistics.md) and [QA limits](skills/scientific-plotting/references/automation-quality.md).
+
+Optional domain integrations:
+
+```bash
+python -m pip install -r requirements-single-cell.txt
+```
+
+```r
+install.packages(c("ggraph", "igraph", "BiocManager"))
+BiocManager::install("ComplexHeatmap", ask=FALSE, update=FALSE)
+```
+
+Run `python examples/domain_adapters.py` or `Rscript examples/domain_adapters.R` for synthetic demonstrations. These functions are separate adapters; the core recipes do not require their packages. See [adapter usage](skills/scientific-plotting/references/domain-adapters.md).
+
+The original style-gallery scripts read the same committed CSV files and work from any current directory. Python writes to `build/python`, R to `build/r`; custom relative output paths are relative to your current directory. Both produce PDF, SVG, PNG and `*.plot.json` export metadata. Existing outputs are protected; use a fresh directory or explicitly request replacement (Python CLI supports `--overwrite`; R helper supports `overwrite = TRUE`). Regenerate synthetic data with `python examples/generate_data.py` (seed 2026).
 
 The reusable helpers also support TIFF. Portable Python presets do not need LaTeX; enable TeX only when an existing installation is available. R uses ragg for PNG/TIFF where installed, with a supported base-device fallback; TIFF export checks LZW device support before rendering. PDF/SVG font availability should be checked on the target system.
 
@@ -94,9 +143,10 @@ The standard R PDF device rounds its page box down to whole points (less than 0.
 python -m pip install -r requirements-dev.txt
 python -m pytest tests -q
 Rscript tests/test_r.R
+Rscript tests/test_recipes.R
 ```
 
-CI runs these checks and renders both galleries. Tests cover all presets, export formats and dimensions, metadata, category mappings and overwrite handling. The Matplotlib upper bound avoids APIs SciencePlots currently uses that are scheduled for removal in Matplotlib 3.13; deprecation warnings on 3.11 are upstream and currently do not prevent rendering.
+CI runs the core checks and expanded galleries in both backends, with separate jobs exercising Scanpy and the R domain adapters. Tests cover all presets, 22 recipes, real metric calculations/ties, matched subjects, corrections, Excel reshape, batch failures/collisions, reproduction wrappers and detectable QA problems. The Matplotlib upper bound avoids APIs SciencePlots currently uses that are scheduled for removal in Matplotlib 3.13; deprecation warnings on 3.11 are upstream and currently do not prevent rendering.
 
 ## Contribute
 
@@ -108,6 +158,6 @@ Original skill instructions, helper code and examples are released under the [MI
 
 - [SciencePlots](https://github.com/garrettj403/SciencePlots) and [Matplotlib](https://matplotlib.org/)
 - [ggplot2](https://ggplot2.tidyverse.org/) and [patchwork](https://patchwork.data-imaginist.com/)
-- Optional: [Seaborn](https://seaborn.pydata.org/), [ggthemes](https://jrnold.github.io/ggthemes/), [ggsci](https://nanx.me/ggsci/), [ComplexHeatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/)
+- Optional: [Seaborn](https://seaborn.pydata.org/), [ggthemes](https://jrnold.github.io/ggthemes/), [ggsci](https://nanx.me/ggsci/), [ComplexHeatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/), [ggraph](https://ggraph.data-imaginist.com/), [Scanpy](https://scanpy.readthedocs.io/en/stable/)
 
 Maintained by [Lei Wang](https://wangleiofficial.github.io/) · [CCNU Bioinformatics](https://github.com/bioinfo-ccnu).

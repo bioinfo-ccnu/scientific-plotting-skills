@@ -1,0 +1,18 @@
+version: 1
+backend: python
+synthetic: true
+preset: nature
+output: ../../build/recipes/ma
+width_mm: 140
+height_mm: 100
+dpi: 300
+formats:
+- pdf
+- svg
+- png
+title: SYNTHETIC DATA
+panels:
+- type: ma
+  data: ../../skills/scientific-plotting/assets/templates/ma.csv
+  options:
+    title: Ma

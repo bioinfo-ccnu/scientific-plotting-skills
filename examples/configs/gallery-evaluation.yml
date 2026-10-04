@@ -1,0 +1,54 @@
+version: 1
+backend: python
+synthetic: true
+presets:
+- nature
+- dark
+output: ../../build/recipes/evaluation
+width_mm: 260
+height_mm: 220
+dpi: 180
+formats:
+- pdf
+- svg
+- png
+title: EVALUATION | SYNTHETIC DATA
+layout:
+  ncols: 3
+  tags: true
+panels:
+- type: roc
+  data: ../../skills/scientific-plotting/assets/templates/roc.csv
+  options:
+    title: Roc
+- type: pr
+  data: ../../skills/scientific-plotting/assets/templates/pr.csv
+  options:
+    title: Pr
+- type: confusion
+  data: ../../skills/scientific-plotting/assets/templates/confusion.csv
+  options:
+    title: Confusion
+- type: calibration
+  data: ../../skills/scientific-plotting/assets/templates/calibration.csv
+  options:
+    title: Calibration
+- type: prediction
+  data: ../../skills/scientific-plotting/assets/templates/prediction.csv
+  options:
+    title: Prediction
+    inset:
+      xlim:
+      - 0.2
+      - 0.5
+      ylim:
+      - 0.2
+      - 0.5
+- type: ablation
+  data: ../../skills/scientific-plotting/assets/templates/ablation.csv
+  options:
+    title: Ablation
+- type: benchmark
+  data: ../../skills/scientific-plotting/assets/templates/benchmark.csv
+  options:
+    title: Benchmark

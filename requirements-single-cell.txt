@@ -1,0 +1,2 @@
+-r requirements.txt
+scanpy>=1.10,<2

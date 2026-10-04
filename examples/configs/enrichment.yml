@@ -1,0 +1,18 @@
+version: 1
+backend: python
+synthetic: true
+preset: nature
+output: ../../build/recipes/enrichment
+width_mm: 140
+height_mm: 100
+dpi: 300
+formats:
+- pdf
+- svg
+- png
+title: SYNTHETIC DATA
+panels:
+- type: enrichment
+  data: ../../skills/scientific-plotting/assets/templates/enrichment.csv
+  options:
+    title: Enrichment

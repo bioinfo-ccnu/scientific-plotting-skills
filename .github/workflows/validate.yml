@@ -16,6 +16,7 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests -q
       - run: python examples/python_gallery.py
+      - run: python examples/recipe_gallery.py --out build/recipes-python
   r:
     runs-on: ubuntu-24.04
     steps:
@@ -24,6 +25,35 @@ jobs:
         with:
           use-public-rspm: true
       - name: Install dependencies
-        run: Rscript -e 'install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg"))'
+        run: Rscript -e 'install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg", "yaml", "readxl", "xml2", "systemfonts"))'
       - run: Rscript tests/test_r.R
+      - run: Rscript tests/test_recipes.R
       - run: Rscript examples/r_gallery.R
+      - name: Render expanded R galleries
+        run: |
+          for category in general bioinformatics evaluation network-single-cell; do
+            Rscript skills/scientific-plotting/scripts/plot_cli.R "examples/configs/gallery-${category}.yml" --output "build/recipes-r/${category}"
+          done
+  scanpy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-single-cell.txt -r requirements-dev.txt
+      - run: python -m pytest tests/test_recipes.py -k optional_scanpy -q
+      - run: python examples/domain_adapters.py
+  r-domain:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          use-public-rspm: true
+      - name: Install domain dependencies
+        run: |
+          Rscript -e 'install.packages(c("ggplot2", "patchwork", "jsonlite", "svglite", "ragg", "yaml", "readxl", "xml2", "systemfonts", "ggraph", "igraph", "BiocManager")); BiocManager::install("ComplexHeatmap", ask=FALSE, update=FALSE)'
+      - run: Rscript tests/test_recipes.R
+      - run: Rscript examples/domain_adapters.R

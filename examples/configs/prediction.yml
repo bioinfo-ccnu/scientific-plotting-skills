@@ -1,0 +1,25 @@
+version: 1
+backend: python
+synthetic: true
+preset: nature
+output: ../../build/recipes/prediction
+width_mm: 140
+height_mm: 100
+dpi: 300
+formats:
+- pdf
+- svg
+- png
+title: SYNTHETIC DATA
+panels:
+- type: prediction
+  data: ../../skills/scientific-plotting/assets/templates/prediction.csv
+  options:
+    title: Prediction
+    inset:
+      xlim:
+      - 0.2
+      - 0.5
+      ylim:
+      - 0.2
+      - 0.5
