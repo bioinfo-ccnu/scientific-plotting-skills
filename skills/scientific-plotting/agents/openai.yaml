@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scientific Plotting"
+  short_description: "Scientific figures in Python and R with flexible styles"
+  default_prompt: "Use $scientific-plotting to create a reproducible scientific figure from my data in the requested plotting style."

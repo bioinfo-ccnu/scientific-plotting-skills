@@ -1,0 +1,17 @@
+{
+  "palettes": {
+    "okabe-ito": ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9", "#F0E442", "#000000"],
+    "bright": ["#56B4E9", "#E69F00", "#009E73", "#CC79A7", "#F0E442", "#FF8F7B", "#B5C7FF", "#FFFFFF"],
+    "grayscale": ["#202020", "#555555", "#888888", "#AAAAAA"]
+  },
+  "presets": {
+    "science": {"styles": ["science", "no-latex"], "family": "serif", "font_size": 9, "width_mm": 89, "height_mm": 64, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": false},
+    "nature": {"styles": ["science", "nature", "no-latex"], "family": "sans", "font_size": 8, "width_mm": 89, "height_mm": 64, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": false},
+    "ieee": {"styles": ["science", "ieee", "no-latex"], "family": "serif", "font_size": 8, "width_mm": 88.9, "height_mm": 63.5, "palette": "grayscale", "background": "#FFFFFF", "foreground": "#202020", "grid": false},
+    "minimal": {"styles": ["default"], "family": "sans", "font_size": 9, "width_mm": 110, "height_mm": 75, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": true},
+    "presentation": {"styles": ["science", "notebook", "no-latex"], "family": "sans", "font_size": 14, "width_mm": 180, "height_mm": 110, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": true},
+    "dark": {"styles": ["dark_background"], "family": "sans", "font_size": 11, "width_mm": 160, "height_mm": 100, "palette": "bright", "background": "#102A43", "foreground": "#EAF2F8", "grid": true},
+    "poster": {"styles": ["default"], "family": "sans", "font_size": 18, "width_mm": 240, "height_mm": 160, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": false},
+    "accessible": {"styles": ["default"], "family": "sans", "font_size": 10, "width_mm": 120, "height_mm": 80, "palette": "okabe-ito", "background": "#FFFFFF", "foreground": "#202020", "grid": true}
+  }
+}
